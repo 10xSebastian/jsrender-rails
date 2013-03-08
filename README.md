@@ -22,7 +22,7 @@ In your JavaScript manifest file, require jsrender followed by your folder conta
 //= require jsrender
 //= require_tree ./views
 
-$(body).append(jsviews.render["views/user"]({name:"Sebastian Pape"}));
+$(body).append($.render["views/user"]({name:"Sebastian Pape"}));
 ```
 
 ## Configuration
@@ -36,7 +36,7 @@ config.jsrender.prefix = "views"
 That would change the previous example to this:
 
 ```javascript
-$(body).append(jsviews.render["user"]({name:"Sebastian Pape"}));
+$(body).append($.render["user"]({name:"Sebastian Pape"}));
 ```
 
 The prefix can also be a regular expression. For example, to use only the name of the file for the template name, regardless of directory structure:
