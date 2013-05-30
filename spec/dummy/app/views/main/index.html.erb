@@ -1,3 +1,5 @@
 <script>
-  document.body.innerHTML = $.render["views/user"]({name:"Sebastian Pape"});
+(function($) {
+  document.body.innerHTML = $.views.render["views/user"]({name:"Sebastian Pape"});
+})((typeof jQuery !== "undefined" && jQuery !== null) ? jQuery : {views: jsviews});
 </script>

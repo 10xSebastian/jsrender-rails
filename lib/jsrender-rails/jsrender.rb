@@ -16,7 +16,7 @@ module JsrenderRails
     end
 
     def evaluate(scope, locals, &block)
-      %{$.templates("#{template_name(scope)}", "#{escape_javascript(data)}");}
+      %{(function($) {$.views.templates("#{template_name(scope)}", "#{escape_javascript(data)}");})((typeof jQuery !== "undefined" && jQuery !== null) ? jQuery : {views: jsviews});}
     end
 
     private

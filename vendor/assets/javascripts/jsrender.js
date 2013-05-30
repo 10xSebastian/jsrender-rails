@@ -255,7 +255,7 @@
 
 		if (boundTagCtx) {
 			// Call compiled function which returns the tagCtxs for current data
-			tagCtx = (boundTagCtx = view.tmpl.bnds[boundTagCtx-1])(view.data, view, $views);
+			tagCtx = (boundTagCtx = view.jsr.bnds[boundTagCtx-1])(view.data, view, $views);
 		}
 
 		value = tagCtx.args[0];
@@ -311,7 +311,7 @@
 
 		res = store && store[item];
 		while ((res === undefined) && view) {
-			store = view.tmpl[storeName];
+			store = view.jsr[storeName];
 			res = store && store[item];
 			view = view.parent;
 		}
@@ -327,7 +327,7 @@
 			boundTagKey = +tagCtxs === tagCtxs && tagCtxs, // if tagCtxs is an integer, then it is the boundTagKey
 			linkCtx = parentView.linkCtx || 0,
 			ctx = parentView.ctx,
-			parentTmpl = tmpl || parentView.tmpl,
+			parentTmpl = tmpl || parentView.jsr,
 			parentView_ = parentView._,
 			tag = tagName._is === "tag" && tagName;
 
@@ -344,9 +344,9 @@
 			tagCtx = tagCtxs[i];
 
 			// Set the tmpl property to the content of the block tag, unless set as an override property on the tag
-			content = tagCtx.tmpl;
-			content = tagCtx.content = content && parentTmpl.tmpls[content - 1];
-			tmpl = tagCtx.props.tmpl;
+			content = tagCtx.jsr;
+			content = tagCtx.content = content && parentTmpl.jsrs[content - 1];
+			tmpl = tagCtx.props.jsr;
 			if (!i && (!tmpl || !tag)) {
 				tagDef = parentView.getRsc("tags", tagName) || error("Unknown tag: {{"+ tagName + "}}");
 			}
@@ -430,7 +430,7 @@
 			}
 			ret += itemRet !== undefined
 				? itemRet   // Return result of render function unless it is undefined, in which case return rendered template
-				: tagCtx.tmpl
+				: tagCtx.jsr
 					// render template/content on the current data item
 					? tagCtx.render()
 					: ""; // No return value from render, and no template/content defined, so return ""
@@ -613,7 +613,7 @@
 		// If options, then this was already compiled from a (script) element template declaration.
 		// If not, then if tmpl is a template object, use it for options
 		options = options || (tmpl.markup ? tmpl : {});
-		options.tmplName = name;
+		options.jsrName = name;
 		if (parentTmpl) {
 			options._parentTmpl = parentTmpl;
 		}
@@ -634,7 +634,7 @@
 			if (tmplOrMarkup.fn || tmpl.fn) {
 				// tmpl is already compiled, so use it, or if different name is provided, clone it
 				if (tmplOrMarkup.fn) {
-					if (name && name !== tmplOrMarkup.tmplName) {
+					if (name && name !== tmplOrMarkup.jsrName) {
 						tmpl = extendCtx(options, tmplOrMarkup);
 					} else {
 						tmpl = tmplOrMarkup;
@@ -766,7 +766,7 @@
 			self = self.tag;
 			tag_ = self._;
 			tmplName = self.tagName;
-			tmpl = tagCtx.tmpl;
+			tmpl = tagCtx.jsr;
 			context = extendCtx(context, self.ctx);
 			contentTmpl = tagCtx.content; // The wrapped content - to be added to views, below
 			if ( tagCtx.props.link === false ) {
@@ -1009,7 +1009,7 @@
 			tmplName = isLinkExpr ? 'data-link="' + tmpl.replace(rNewLine, " ").slice(1, -1) + '"' : tmpl;
 			tmpl = 0;
 		} else {
-			tmplName = tmpl.tmplName || "unnamed";
+			tmplName = tmpl.jsrName || "unnamed";
 			if (allowCode = tmpl.allowCode) {
 				tmplOptions.allowCode = true;
 			}
@@ -1017,7 +1017,7 @@
 				tmplOptions.debug = true;
 			}
 			tmplBindings = tmpl.bnds;
-			nestedTmpls = tmpl.tmpls;
+			nestedTmpls = tmpl.jsrs;
 		}
 		for (i = 0; i < l; i++) {
 			// AST nodes: [ tagName, converter, params, content, hash, noError, pathBindings, contentMarkup, link ]
@@ -1064,7 +1064,7 @@
 						if (content) {
 							// Create template object for nested template
 							nestedTmpl = TmplObject(markup, tmplOptions);
-							nestedTmpl.tmplName = tmplName + "/" + tagName;
+							nestedTmpl.jsrName = tmplName + "/" + tagName;
 							// Compile to AST and then to compiled function
 							buildCode(content, nestedTmpl);
 							nestedTmpls.push(nestedTmpl);
@@ -1308,10 +1308,8 @@
 	} else {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// jQuery is not loaded.
-		if (!$) { $ = global.$ = {}};
-		$.render = $render;
-		$.views = $views;
-		$.templates = $templates = $views.templates;
+
+		$ = global.jsviews = $views;
 
 		$.isArray = Array && Array.isArray || function(obj) {
 			return Object.prototype.toString.call(obj) === "[object Array]";

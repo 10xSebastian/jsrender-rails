@@ -7,9 +7,9 @@ describe JsrenderRails::Jsrender do
     Rails.application.assets["jsrender"].should_not be_nil
   end
 
-  it "compiles templates with the .tmpl extension" do
+  it "compiles templates with the .jsr extension" do
     template = Rails.application.assets["views/user"]
-    template.to_s.should == %{$.templates("views/user", "<div class=\\\"user\\\">{{>name}}<\\/div>\\n");}
+    template.to_s.should == %{(function($) {$.templates(\"views/user\", \"<div class=\\\"user\\\">{{>name}}<\\/div>\\n\");})((typeof jQuery !== \"undefined\" && jQuery !== null) ? jQuery : {views: jsviews});}
   end
 
   context "when prefix is set" do

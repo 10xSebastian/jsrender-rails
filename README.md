@@ -8,10 +8,10 @@ Add it to your Gemfile and run `bundle` or run `gem install jsrender-rails`.
 
 ## Usage
 
-jsrender tempaltes will be recognized by Sprockets with the `.tmpl` extension. Place them anywhere in the Sprockets load path.
+jsrender tempaltes will be recognized by Sprockets with the `.jsr` extension. Place them anywhere in the Sprockets load path.
 
 ```html
-<!-- app/assets/javascripts/views/user.tmpl -->
+<!-- app/assets/javascripts/views/user.jsr -->
 <div class="user">{{>name}}</div>
 ```
 

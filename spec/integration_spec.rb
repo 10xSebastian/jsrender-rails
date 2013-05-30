@@ -2,7 +2,7 @@ require "spec_helper"
 
 feature "Using jsrender", js: true do
   after do
-    Rails.application.config.jsrender.prefix = ''
+    Rails.application.config.jsrender.prefix = 'views'
   end
 
   scenario "Loading a page that uses jsrender" do

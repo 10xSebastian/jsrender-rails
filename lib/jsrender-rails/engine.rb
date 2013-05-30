@@ -7,7 +7,7 @@ module JsrenderRails
 
     initializer "sprockets.jsrender", :after => "sprockets.environment", :group => :all do |app|
       next unless app.assets
-      app.assets.register_engine(".tmpl", Jsrender)
+      app.assets.register_engine(".jsr", Jsrender)
     end
   end
 end
