@@ -47,7 +47,7 @@ config.jsrender.prefix = %r{([^/]*/)*}
 
 ## Compatible with jQuery Templates?
 
-For sure NOT!
+Yes, due to the fact that you use the .jsr extension instead of the prior .tmpl one it should work in parallel.
 
 ## HAML
 

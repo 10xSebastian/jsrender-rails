@@ -1,6 +1,6 @@
 module Jsrender
   module Rails
-    VERSION = "1.2"
-    JS_RENDER_VERSION = "1.0b30"
+    VERSION = "2.0"
+    JS_RENDER_VERSION = "1.0.0-beta"
   end
 end
